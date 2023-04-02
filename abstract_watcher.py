@@ -104,10 +104,7 @@ class StudentWatcher(AbstractWatcher):
         for task in done:
             self.__register_task(task)
         for task in pending:
-            if task.done():
-                self.__register_task(task)
-            else:
-                task.cancel()
+            task.cancel()
         self.tasks = []
         self.__is_running = False
 
