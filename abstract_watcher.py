@@ -101,10 +101,11 @@ class StudentWatcher(AbstractWatcher):
         if not self.__is_running:
             raise RuntimeError('Watcher is not running')
         done, pending = await asyncio.wait(self.tasks, timeout=self.timeout)
-        for task in done:
-            self.__register_task(task)
-        for task in pending:
-            task.cancel()
+        for task in self.tasks:
+            if task in done:
+                self.__register_task(task)
+            else:
+                task.cancel()
         self.tasks = []
         self.__is_running = False
 
